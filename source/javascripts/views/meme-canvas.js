@@ -43,8 +43,10 @@ MEME.MemeCanvasView = Backbone.View.extend({
     this.canvas.width = d.width;
     this.canvas.height = d.height;
     ctx.clearRect(0, 0, d.width, d.height);
+    ctx.fillStyle = d.backgroundColor;
 
-    function renderBackground(ctx) {
+
+    function renderBackgroundImage(ctx) {
       // Base height and width:
       var bh = m.background.height;
       var bw = m.background.width;
@@ -58,6 +60,16 @@ MEME.MemeCanvasView = Backbone.View.extend({
         var cy = d.backgroundPosition.y || d.height / 2;
 
         ctx.drawImage(m.background, 0, 0, bw, bh, cx-(tw/2), cy-(th/2), tw, th);
+      }
+    }
+
+    function renderBackground(ctx) {
+      if (d.backgroundColor) {
+        ctx.save();
+        ctx.fillStyle = d.backgroundColor;
+        ctx.fillRect(0, 0, d.width, d.height);
+        ctx.globalAlpha = 1;
+        ctx.restore();
       }
     }
 
@@ -77,7 +89,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
       var x = padding;
       var y = padding;
 
-      ctx.font = d.fontSize +'pt '+ d.fontFamily;
+      ctx.font = ( d.fontSize * d.headlineScale ) +'pt '+ d.fontFamily;
       ctx.fillStyle = d.fontColor;
       ctx.textBaseline = 'top';
 
@@ -93,7 +105,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
       if (d.textAlign == 'center') {
         ctx.textAlign = 'center';
         x = d.width / 2;
-        y = d.height - d.height / 1.5;
+
         maxWidth = d.width - d.width / 3;
 
       } else if (d.textAlign == 'right' ) {
@@ -104,36 +116,120 @@ MEME.MemeCanvasView = Backbone.View.extend({
         ctx.textAlign = 'left';
       }
 
-      var words = d.headlineText.split(' ');
-      var line  = '';
+      //Text Position
+      var y;
 
-      for (var n = 0; n < words.length; n++) {
-        var testLine  = line + words[n] + ' ';
-        var metrics   = ctx.measureText( testLine );
-        var testWidth = metrics.width;
+      if ( d.textPosition == 'top' ) {
+       y = 15;
+     } else if ( d.textPosition == 'middle' ) {
+       y = d.height - d.height/ 1.5;
+     } else if ( d.textPosition == 'bottom' ) {
+       y = d.height - 100;
+     }
 
-        if (testWidth > maxWidth && n > 0) {
-          ctx.fillText(line, x, y);
-          line = words[n] + ' ';
-          y += Math.round(d.fontSize * 1.5);
-        } else {
-          line = testLine;
-        }
+     var words = d.headlineText.split(' ');
+     var line  = '';
+
+     for (var n = 0; n < words.length; n++) {
+      var testLine  = line + words[n] + ' ';
+      var metrics   = ctx.measureText( testLine );
+      var testWidth = metrics.width;
+
+      if (testWidth > maxWidth && n > 0) {
+        ctx.fillText(line, x, y);
+        line = words[n] + ' ';
+        y += Math.round(d.fontSize * d.headlineScale * 1.5);
+      } else {
+        line = testLine;
+      }
+    }
+
+
+
+
+    ctx.fillText(line, x, y);
+    ctx.shadowColor = 'transparent';
+  }
+
+  function renderBody(ctx) {
+        console.log('render body');
+
+      var maxWidth = Math.round(d.width * 0.75);
+      var x = padding;
+      var y = padding;
+
+      ctx.font = ( d.fontSize ) +'pt '+ d.fontFamily;
+      ctx.fillStyle = d.fontColor;
+      ctx.textBaseline = 'top';
+
+      // Text shadow:
+      if (d.textShadow) {
+        ctx.shadowColor = "#666";
+        ctx.shadowOffsetX = -2;
+        ctx.shadowOffsetY = 1;
+        ctx.shadowBlur = 10;
       }
 
-      ctx.fillText(line, x, y);
-      ctx.shadowColor = 'transparent';
+      // Text alignment:
+      if (d.textAlign == 'center') {
+        ctx.textAlign = 'center';
+        x = d.width / 2;
+
+        maxWidth = d.width - d.width / 3;
+
+      } else if (d.textAlign == 'right' ) {
+        ctx.textAlign = 'right';
+        x = d.width - padding;
+
+      } else {
+        ctx.textAlign = 'left';
+      }
+
+      //Text Position
+      var y;
+
+     if ( d.bodyPosition == 'top' ) {
+       y = 15;
+     } else if ( d.bodyPosition == 'middle' ) {
+       y = d.height - d.height/ 1.5;
+     } else if ( d.bodyPosition == 'bottom' ) {
+       y = d.height - 100;
+     }
+
+     var words = d.bodyText.split(' ');
+     var line  = '';
+
+     for (var n = 0; n < words.length; n++) {
+      var testLine  = line + words[n] + ' ';
+      var metrics   = ctx.measureText( testLine );
+      var testWidth = metrics.width;
+
+      if (testWidth > maxWidth && n > 0) {
+        ctx.fillText(line, x, y);
+        line = words[n] + ' ';
+        y += Math.round(d.fontSize * 1.5);
+      } else {
+        line = testLine;
+      }
     }
 
-    function renderCredit(ctx) {
-      ctx.textBaseline = 'bottom';
-      ctx.textAlign = 'left';
-      ctx.fillStyle = d.fontColor;
-      ctx.font = 'normal '+ d.creditSize +'pt '+ d.fontFamily;
-      ctx.fillText(d.creditText, padding, d.height - padding);
-    }
 
-    function renderWatermark(ctx) {
+
+
+    ctx.fillText(line, x, y);
+    ctx.shadowColor = 'transparent';
+  }
+
+
+  function renderCredit(ctx) {
+    ctx.textBaseline = 'bottom';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = d.fontColor;
+    ctx.font = 'normal '+ d.creditSize +'pt '+ d.fontFamily;
+    ctx.fillText(d.creditText, padding, d.height - padding);
+  }
+
+  function renderWatermark(ctx) {
       // Base & transformed height and width:
       var bw, bh, tw, th;
       bh = th = m.watermark.height;
@@ -155,9 +251,15 @@ MEME.MemeCanvasView = Backbone.View.extend({
       }
     }
 
-    renderBackground(ctx);
+    renderBackground(ctx)
+    renderBackgroundImage(ctx);
     renderOverlay(ctx);
     renderHeadline(ctx);
+    console.log(d.product);
+    if ( d.product == 'Flyer'){
+      console.log('Flyer');
+      renderBody(ctx);
+    } 
     renderCredit(ctx);
     renderWatermark(ctx);
 
@@ -185,6 +287,8 @@ MEME.MemeCanvasView = Backbone.View.extend({
     // Configure drag settings:
     var model = this.model;
     var d = model.toJSON();
+    var bw = model.background.width * d.imageScale;
+    var bh = model.background.height * d.imageScale;
     var iw = model.background.width * d.imageScale / 2;
     var ih = model.background.height * d.imageScale / 2;
     var origin = {x: evt.clientX, y: evt.clientY};
@@ -195,18 +299,28 @@ MEME.MemeCanvasView = Backbone.View.extend({
     // Create update function with draggable constraints:
     function update(evt) {
       evt.preventDefault();
-      model.set('backgroundPosition', {
+      if ( bw > d.width && bh > d.height ) {
+        console.log('GREATER');
+        model.set('backgroundPosition', {
         x: Math.max(d.width-iw, Math.min(start.x - (origin.x - evt.clientX), iw)),
         y: Math.max(d.height-ih, Math.min(start.y - (origin.y - evt.clientY), ih))
       });
+      } else {
+        console.log('LESS');
+        model.set('backgroundPosition', {
+        x: Math.max(Math.min(start.x - (origin.x - evt.clientX))),
+        y: Math.max(Math.min(start.y - (origin.y - evt.clientY)))
+      });
+      }
+      
     }
 
     // Perform drag sequence:
     var $doc = MEME.$(document)
-      .on('mousemove.drag', update)
-      .on('mouseup.drag', function(evt) {
-        $doc.off('mouseup.drag mousemove.drag');
-        update(evt);
-      });
+    .on('mousemove.drag', update)
+    .on('mouseup.drag', function(evt) {
+      $doc.off('mouseup.drag mousemove.drag');
+      update(evt);
+    });
   }
 });

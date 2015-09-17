@@ -1,16 +1,24 @@
 var MEME_SETTINGS = {
-  creditText: 'Source:', // Default "credits" text.
+  bodyText: '',
+  bodyPosition: 'middle',
+  bodyPositionOpts: [{text: 'Top', value: 'top'},
+    {text: 'Middle', value: 'middle'},
+    {text: 'Bottom', value: 'bottom'}],
+  product: 'Facebook',
+  productOps: ['Facebook', 'Pinterest', 'Flyer', 'Instagram'],
+
+  creditText: 'Photo by', // Default "credits" text.
   creditSize: 12, // Font size for credit text.
   downloadName: 'share', // The name of the downloaded image file (will have a ".png" extension added).
   fontColor: 'white', // Universal font color.
 
   // Universal font family for texts:
   // Note that you'll need to included quoted font names as you would in CSS, ie: '"Knockout 28 B"'.
-  fontFamily: 'Helvetica Neue',
+  fontFamily: 'Museo Slab',
   // Font family options: set to empty array to disable font selector.
   // These options may also be formatted as {text:'Knockout', value:'"Knockout 28 B"'}.
-  fontFamilyOpts: ['Arial', 'Helvetica Neue', 'Comic Sans MS'],
-  
+  fontFamilyOpts: ['Museo Sans Rounded', 'Museo Slab', 'Open Sans Condensed', 'Open Sans'],
+
   // Font size of main headline:
   fontSize: 24,
   // Font size options: set to empty array to disable font-size selector.
@@ -19,10 +27,15 @@ var MEME_SETTINGS = {
     {text: 'Medium text', value: 24},
     {text: 'Large text', value: 36}
   ],
+  textPosition: 'middle',
+  textPositionOpts: [{text: 'Top', value: 'top'},
+    {text: 'Middle', value: 'middle'},
+    {text: 'Bottom', value: 'bottom'}],
 
   headlineText: 'Write your own headline', // Default headline text.
-  height: 378, // Canvas rendering height.
+  height: 400, // Canvas rendering height.
   imageScale: 1, // Background image scale.
+  headlineScale: 1, // headline size scale.
   imageSrc: '', // Default background image path. MUST reside on host domain, or use base64 data.
   overlayAlpha: 0.5, // Opacity of image overlay.
 
@@ -30,13 +43,16 @@ var MEME_SETTINGS = {
   overlayColor: '#000',
   // Overlay color options: set to empty array to disable overlay options selector.
   overlayColorOpts: ['#000', '#777', '#2980b9'],
+
+  backgroundColor: '#00C5EC',
+  backgroundColorOpts: [ '#00C5EC', '#3D8A99', '#00FF9C', '#FF4440', '#CC1461'],
   paddingRatio: 0.05, // Percentage of canvas width to use as edge padding.
-  
+
   // Text alignment: valid settings are "left", "center", and "right".
   textAlign: 'left',
   // Text alignment options: set to empty array to disable alignment picker.
   textAlignOpts: [
-    {text: 'Align left', value: 'left'}, 
+    {text: 'Align left', value: 'left'},
     {text: 'Align center', value: 'center'},
     {text: 'Align right', value: 'right'}
   ],
@@ -47,16 +63,7 @@ var MEME_SETTINGS = {
   watermarkMaxWidthRatio: 0.25, // Maximum allowed width of watermark (percentage of total canvas width).
 
   // Path to the watermark image source, or blank for no watermark:
-  // Alternatively, use '<%= asset_data_uri("vox.png") %>' to populate the watermark with base64 data, avoiding Cross-Origin issues.
-  watermarkSrc: (localStorage && localStorage.getItem('meme_watermark')) || '<%= image_path("vox.png") %>',
-  
-  // Watermark image options: set to empty array to disable watermark picker.
-  // NOTE: only populate the "data" attributes with base64 data when concerned about Cross-Origin requests...
-  // Otherwise, just leave "data" attributes blank and allow images to load from your server.
-  watermarkOpts: [
-    {text: 'Vox', value: '<%= image_path("vox.png") %>', data: '<%= asset_data_uri("vox.png") %>'},
-    {text: 'The Verge', value: '<%= image_path("theverge.png") %>', data: ''}
-  ],
+  watermarkSrc: '<%= image_path("spoon.png") %>',
 
-  width: 755 // Canvas rendering width.
+  width: 764 // Canvas rendering width.
 };

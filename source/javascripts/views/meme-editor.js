@@ -34,9 +34,20 @@ MEME.MemeEditorView = Backbone.View.extend({
       $('#font-size').append(buildOptions(d.fontSizeOpts)).show();
     }
 
+    // Build product options:
+    if (d.productOps && d.productOps.length) {
+      $('#product').append(buildOptions(d.productOps)).show();
+    }
+
+
     // Build font family options:
     if (d.fontFamilyOpts && d.fontFamilyOpts.length) {
       $('#font-family').append(buildOptions(d.fontFamilyOpts)).show();
+    }
+
+     // Build text position options:
+    if (d.textPositionOpts && d.textPositionOpts.length) {
+      $('#text-position').append(buildOptions(d.textPositionOpts)).show();
     }
 
     // Build watermark options:
@@ -53,31 +64,50 @@ MEME.MemeEditorView = Backbone.View.extend({
 
       $('#overlay').show().find('ul').append(overlayOpts);
     }
+
+    // Build background color options:
+    if (d.backgroundColorOpts && d.backgroundColorOpts.length) {
+      var backgroundOpts = _.reduce(d.backgroundColorOpts, function(memo, opt) {
+        var color = opt.hasOwnProperty('value') ? opt.value : opt;
+        return memo += '<li><label><input class="m-editor__swatch" style="background-color:'+color+'" type="radio" name="background" value="'+color+'"></label></li>';
+      }, '');
+
+      $('#background').show().find('ul').append(backgroundOpts);
+    }
   },
 
   render: function() {
     var d = this.model.toJSON();
     this.$('#headline').val(d.headlineText);
+    this.$('#body').val(d.bodyText);
     this.$('#credit').val(d.creditText);
     this.$('#watermark').val(d.watermarkSrc);
     this.$('#image-scale').val(d.imageScale);
+    this.$('#headline-scale').val(d.headlineScale);
     this.$('#font-size').val(d.fontSize);
     this.$('#font-family').val(d.fontFamily);
     this.$('#text-align').val(d.textAlign);
+    this.$('#text-position').val(d.textPosition);
     this.$('#text-shadow').prop('checked', d.textShadow);
     this.$('#overlay').find('[value="'+d.overlayColor+'"]').prop('checked', true);
+    this.$('#background').find('[value="'+d.backgroundColor+'"]').prop('checked', true);
   },
 
   events: {
     'input #headline': 'onHeadline',
+    'input #body': 'onBody',
     'input #credit': 'onCredit',
     'input #image-scale': 'onScale',
+    'input #headline-scale': 'headlineScale',
     'change #font-size': 'onFontSize',
     'change #font-family': 'onFontFamily',
     'change #watermark': 'onWatermark',
+    'change #product': 'onProduct',
     'change #text-align': 'onTextAlign',
+    'change #text-position': 'onTextPosition',
     'change #text-shadow': 'onTextShadow',
     'change [name="overlay"]': 'onOverlayColor',
+    'change [name="background"]': 'onBackgroundColor',
     'dragover #dropzone': 'onZoneOver',
     'dragleave #dropzone': 'onZoneOut',
     'drop #dropzone': 'onZoneDrop'
@@ -91,8 +121,16 @@ MEME.MemeEditorView = Backbone.View.extend({
     this.model.set('headlineText', this.$('#headline').val());
   },
 
+  onBody: function() {
+    this.model.set('bodyText', this.$('#body').val());
+  },
+
   onTextAlign: function() {
     this.model.set('textAlign', this.$('#text-align').val());
+  },
+
+  onTextPosition: function() {
+    this.model.set('textPosition', this.$('#text-position').val());
   },
 
   onTextShadow: function() {
@@ -112,12 +150,38 @@ MEME.MemeEditorView = Backbone.View.extend({
     if (localStorage) localStorage.setItem('meme_watermark', this.$('#watermark').val());
   },
 
+  onProduct: function() {
+    var selection = this.$('#product').val();
+    this.model.set('product', selection);
+    if ( selection == 'Facebook') {
+      this.model.set('width', 764);
+      this.model.set('height', 400);
+    } else if ( selection == 'Pinterest') {
+      this.model.set('width', 600);
+      this.model.set('height', 900);
+    } else if ( selection == 'Flyer' ) {
+      this.model.set('width', 1000);
+      this.model.set('height', 1200);
+    } else if ( selection == 'Instagram' ) {
+      this.model.set('width', 700);
+      this.model.set('height', 700);
+    }
+  },
+
   onScale: function() {
     this.model.set('imageScale', this.$('#image-scale').val());
   },
 
+  headlineScale: function() {
+    this.model.set('headlineScale', this.$('#headline-scale').val());
+  },
+
   onOverlayColor: function(evt) {
     this.model.set('overlayColor', this.$(evt.target).val());
+  },
+
+   onBackgroundColor: function(evt) {
+    this.model.set('backgroundColor', this.$(evt.target).val());
   },
 
   getDataTransfer: function(evt) {
