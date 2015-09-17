@@ -50,6 +50,11 @@ MEME.MemeEditorView = Backbone.View.extend({
       $('#text-position').append(buildOptions(d.textPositionOpts)).show();
     }
 
+         // Build body position options:
+    if (d.bodyPositionOpts && d.bodyPositionOpts.length) {
+      $('#body-position').append(buildOptions(d.bodyPositionOpts)).show();
+    }
+
     // Build watermark options:
     if (d.watermarkOpts && d.watermarkOpts.length) {
       $('#watermark').append(buildOptions(d.watermarkOpts)).show();
@@ -88,6 +93,7 @@ MEME.MemeEditorView = Backbone.View.extend({
     this.$('#font-family').val(d.fontFamily);
     this.$('#text-align').val(d.textAlign);
     this.$('#text-position').val(d.textPosition);
+    this.$('#body-position').val(d.bodyPosition);
     this.$('#text-shadow').prop('checked', d.textShadow);
     this.$('#overlay').find('[value="'+d.overlayColor+'"]').prop('checked', true);
     this.$('#background').find('[value="'+d.backgroundColor+'"]').prop('checked', true);
@@ -105,6 +111,7 @@ MEME.MemeEditorView = Backbone.View.extend({
     'change #product': 'onProduct',
     'change #text-align': 'onTextAlign',
     'change #text-position': 'onTextPosition',
+    'change #body-position': 'onBodyPosition',
     'change #text-shadow': 'onTextShadow',
     'change [name="overlay"]': 'onOverlayColor',
     'change [name="background"]': 'onBackgroundColor',
@@ -131,6 +138,9 @@ MEME.MemeEditorView = Backbone.View.extend({
 
   onTextPosition: function() {
     this.model.set('textPosition', this.$('#text-position').val());
+  },
+   onBodyPosition: function() {
+    this.model.set('bodyPosition', this.$('#body-position').val());
   },
 
   onTextShadow: function() {
