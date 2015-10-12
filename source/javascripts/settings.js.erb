@@ -17,7 +17,12 @@ var MEME_SETTINGS = {
   fontFamily: 'Museo Slab',
   // Font family options: set to empty array to disable font selector.
   // These options may also be formatted as {text:'Knockout', value:'"Knockout 28 B"'}.
-  fontFamilyOpts: ['Museo Sans Rounded', 'Museo Slab', 'Open Sans Condensed', 'Open Sans'],
+  fontFamilyOpts: [
+  {text: 'Museo Slab', value: 'museo-slab'},
+    {text: 'Museo Sans Rounded', value: 'museo-sans-rounded'},
+    {text: 'Open Sans Condensed', value: 'open-sans-condensed'},
+    {text: 'Open Sans', value: 'open-sans'},
+    ],
 
   // Font size of main headline:
   fontSize: 24,
