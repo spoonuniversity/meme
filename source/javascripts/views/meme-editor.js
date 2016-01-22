@@ -163,7 +163,7 @@ MEME.MemeEditorView = Backbone.View.extend({
   onProduct: function() {
     var selection = this.$('#product').val();
     this.model.set('product', selection);
-    if ( selection == 'Facebook') {
+    if ( selection == 'Facebook Share') {
       this.model.set('width', 764);
       this.model.set('height', 400);
     } else if ( selection == 'Pinterest') {
@@ -175,7 +175,11 @@ MEME.MemeEditorView = Backbone.View.extend({
     } else if ( selection == 'Instagram' ) {
       this.model.set('width', 700);
       this.model.set('height', 700);
+    } else if ( selection == 'Facebook Cover' ) {
+      this.model.set('width', 851);
+      this.model.set('height', 315);
     }
+
   },
 
   onScale: function() {

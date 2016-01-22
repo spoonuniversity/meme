@@ -14,7 +14,7 @@ MEME.MemeModel = Backbone.Model.extend({
     fontColor: 'white',
     fontFamily: 'Helvetica Neue',
     product: 'Facebook',
-    productOps: ['Facebook', 'Pinterest', 'Flyer'],
+    productOps: ['Facebook Share', 'Facebook Cover', 'Pinterest', 'Flyer'],
     fontFamilyOpts: ['Helvetica', 'Helvetica Neue', 'Comic Sans MS'],
     fontSize: 24,
     fontSizeOpts: [14, 24, 36],
