@@ -158,7 +158,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
       var x = padding;
       var y = padding;
 
-      ctx.font = ( d.fontSize ) +'pt '+ d.fontFamily;
+      ctx.font = ( d.fontSize ) +'pt '+ d.fontFamily + ' ' + d.fontWeight;
       ctx.fillStyle = d.fontColor;
       ctx.textBaseline = 'top';
 
@@ -259,7 +259,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
     if ( d.product == 'Flyer'){
       console.log('Flyer');
       renderBody(ctx);
-    } 
+    }
     renderCredit(ctx);
     renderWatermark(ctx);
 
@@ -312,7 +312,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
         y: Math.max(Math.min(start.y - (origin.y - evt.clientY)))
       });
       }
-      
+
     }
 
     // Perform drag sequence:
