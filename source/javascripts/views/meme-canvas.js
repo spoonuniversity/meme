@@ -90,10 +90,10 @@ MEME.MemeCanvasView = Backbone.View.extend({
       var maxWidth = Math.round(d.width * 0.75);
       var x = padding;
       var y = padding;
-
-      ctx.font = 'bold ' + ( d.fontSize * d.headlineScale ) +'pt "'+ d.fontFamily + '"';
-      console.log('d', d);
-      console.log('renderHeadline', ctx);
+      console.log('ctx.font', ctx.font)
+      ctx.font = "bolder " + ( d.fontSize * d.headlineScale ) +"px '"+ d.fontFamily + "', sans-serif";
+      // font: italic small-caps bolder condensed 16px/3 cursive;
+      console.log('ctx.font', ctx.font)
       ctx.fillStyle = d.fontColor;
       ctx.textBaseline = 'top';
 
