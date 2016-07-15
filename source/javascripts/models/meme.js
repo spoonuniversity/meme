@@ -12,7 +12,7 @@ MEME.MemeModel = Backbone.Model.extend({
     creditSize: 12,
     downloadName: 'share',
     fontColor: 'white',
-    fontFamily: 'Proxima Nova 900',
+    fontFamily: "proxima-nova",
     product: 'Facebook',
     productOps: ['Facebook Share', 'Facebook Cover', 'Pinterest', 'Flyer'],
     fontFamilyOpts: ['Proxima Nova', 'Open Sans Condensed'],

@@ -91,7 +91,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
       var x = padding;
       var y = padding;
 
-      ctx.font = 'bold ' + ( d.fontSize * d.headlineScale ) +'pt '+ d.fontFamily;
+      ctx.font = 'bold ' + ( d.fontSize * d.headlineScale ) +'pt "'+ d.fontFamily + '"';
       console.log('d', d);
       console.log('renderHeadline', ctx);
       ctx.fillStyle = d.fontColor;
@@ -259,6 +259,8 @@ MEME.MemeCanvasView = Backbone.View.extend({
     renderBackgroundImage(ctx);
     renderOverlay(ctx);
     renderHeadline(ctx);
+
+
     if ( d.product == 'Flyer'){
       renderBody(ctx);
     }
