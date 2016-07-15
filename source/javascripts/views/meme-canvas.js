@@ -4,9 +4,11 @@
 */
 MEME.MemeCanvasView = Backbone.View.extend({
 
+
   initialize: function() {
     var canvas = document.createElement('canvas');
     var $container = MEME.$('#meme-canvas');
+    console.log('MemeCanvasView/init', this);
 
     // Display canvas, if enabled:
     if (canvas && canvas.getContext) {
@@ -89,7 +91,9 @@ MEME.MemeCanvasView = Backbone.View.extend({
       var x = padding;
       var y = padding;
 
-      ctx.font = ( d.fontSize * d.headlineScale ) +'pt '+ d.fontFamily;
+      ctx.font = 'bold ' + ( d.fontSize * d.headlineScale ) +'pt '+ d.fontFamily;
+      console.log('d', d);
+      console.log('renderHeadline', ctx);
       ctx.fillStyle = d.fontColor;
       ctx.textBaseline = 'top';
 
@@ -255,9 +259,7 @@ MEME.MemeCanvasView = Backbone.View.extend({
     renderBackgroundImage(ctx);
     renderOverlay(ctx);
     renderHeadline(ctx);
-    console.log(d.product);
     if ( d.product == 'Flyer'){
-      console.log('Flyer');
       renderBody(ctx);
     }
     renderCredit(ctx);
