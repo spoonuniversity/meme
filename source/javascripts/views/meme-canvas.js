@@ -8,7 +8,6 @@ MEME.MemeCanvasView = Backbone.View.extend({
   initialize: function() {
     var canvas = document.createElement('canvas');
     var $container = MEME.$('#meme-canvas');
-    console.log('MemeCanvasView/init', this);
 
     // Display canvas, if enabled:
     if (canvas && canvas.getContext) {
@@ -90,10 +89,8 @@ MEME.MemeCanvasView = Backbone.View.extend({
       var maxWidth = Math.round(d.width * 0.75);
       var x = padding;
       var y = padding;
-      console.log('ctx.font', ctx.font)
       ctx.font = "bolder " + ( d.fontSize * d.headlineScale ) +"px '"+ d.fontFamily + "', sans-serif";
       // font: italic small-caps bolder condensed 16px/3 cursive;
-      console.log('ctx.font', ctx.font)
       ctx.fillStyle = d.fontColor;
       ctx.textBaseline = 'top';
 
@@ -156,13 +153,15 @@ MEME.MemeCanvasView = Backbone.View.extend({
   }
 
   function renderBody(ctx) {
-        console.log('render body');
+      console.log('render body');
 
       var maxWidth = Math.round(d.width * 0.75);
       var x = padding;
       var y = padding;
+      var bodySize = d.fontSize * d.bodyScale;
 
-      ctx.font = ( d.fontSize ) +'pt '+ d.fontFamily + ' ' + d.fontWeight;
+      ctx.font = bodySize +'pt '+ d.fontFamily + ' ' + d.fontWeight;
+      console.log('ctx', ( bodySize ) , ctx );
       ctx.fillStyle = d.fontColor;
       ctx.textBaseline = 'top';
 
@@ -211,14 +210,11 @@ MEME.MemeCanvasView = Backbone.View.extend({
       if (testWidth > maxWidth && n > 0) {
         ctx.fillText(line, x, y);
         line = words[n] + ' ';
-        y += Math.round(d.fontSize * 1.5);
+        y += Math.round(d.fontSize * d.bodyScale * 1.5);
       } else {
         line = testLine;
       }
     }
-
-
-
 
     ctx.fillText(line, x, y);
     ctx.shadowColor = 'transparent';
@@ -261,11 +257,15 @@ MEME.MemeCanvasView = Backbone.View.extend({
     renderHeadline(ctx);
 
 
-    if ( d.product == 'Flyer'){
+    if ( d.product == 'Flyer' || d.product == 'Instagram' ){
       renderBody(ctx);
     }
+
     renderCredit(ctx);
-    renderWatermark(ctx);
+
+    if ( d.logo != false ){
+      renderWatermark(ctx);
+    }
 
     var data = this.canvas.toDataURL(); //.replace('image/png', 'image/octet-stream');
     this.$('#meme-download').attr({
@@ -304,13 +304,11 @@ MEME.MemeCanvasView = Backbone.View.extend({
     function update(evt) {
       evt.preventDefault();
       if ( bw > d.width && bh > d.height ) {
-        console.log('GREATER');
         model.set('backgroundPosition', {
         x: Math.max(d.width-iw, Math.min(start.x - (origin.x - evt.clientX), iw)),
         y: Math.max(d.height-ih, Math.min(start.y - (origin.y - evt.clientY), ih))
       });
       } else {
-        console.log('LESS');
         model.set('backgroundPosition', {
         x: Math.max(Math.min(start.x - (origin.x - evt.clientX))),
         y: Math.max(Math.min(start.y - (origin.y - evt.clientY)))

@@ -5,7 +5,7 @@
 MEME.MemeModel = Backbone.Model.extend({
   defaults: {
     backgroundPosition: { x: null, y: null },
-    bodyPosition:'middle',
+    bodyPosition:'bottom',
     bodyPositionOpts: ['top','middle','bottom'],
     bodyText: '',
     creditText: 'Photo by',
@@ -18,11 +18,14 @@ MEME.MemeModel = Backbone.Model.extend({
     fontFamilyOpts: ['Proxima Nova', 'Open Sans Condensed'],
     fontSize: 24,
     fontSizeOpts: [14, 24, 36],
+    bodySize: 14,
+    bodySizeOpts: [14, 24, 36],
     fontWeight: 900,
     fontWeightOpts: [100, 500, 900],
     headlineText: 'Write your own headline',
     height: 378,
     headlineScale: 1,
+    bodyScale: 1,
     imageScale: 1,
     imageSrc: '',
     overlayAlpha: 0.5,
@@ -39,6 +42,7 @@ MEME.MemeModel = Backbone.Model.extend({
     watermarkMaxWidthRatio: 0.25,
     watermarkSrc: '',
     watermarkOpts: [],
+    logo: true,
     width: 755
   },
 

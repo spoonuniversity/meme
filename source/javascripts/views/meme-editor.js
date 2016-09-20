@@ -34,6 +34,12 @@ MEME.MemeEditorView = Backbone.View.extend({
       $('#font-size').append(buildOptions(d.fontSizeOpts)).show();
     }
 
+
+    // Build body size options:
+    if (d.bodySizeOpts && d.bodySizeOpts.length) {
+      $('#body-size').append(buildOptions(d.bodySizeOpts)).show();
+    }
+
     // Build font weight options:
     if (d.fontWeightOpts && d.fontWeightOpts.length) {
       $('#font-weight').append(buildOptions(d.fontWeightOpts)).show();
@@ -94,13 +100,16 @@ MEME.MemeEditorView = Backbone.View.extend({
     this.$('#watermark').val(d.watermarkSrc);
     this.$('#image-scale').val(d.imageScale);
     this.$('#headline-scale').val(d.headlineScale);
+    this.$('#body-scale').val(d.bodyScale);
     this.$('#font-size').val(d.fontSize);
+    this.$('#body-size').val(d.bodySize);
     this.$('#font-weight').val(d.fontWeight);
     this.$('#font-family').val(d.fontFamily);
     this.$('#text-align').val(d.textAlign);
     this.$('#text-position').val(d.textPosition);
     this.$('#body-position').val(d.bodyPosition);
     this.$('#text-shadow').prop('checked', d.textShadow);
+    this.$('#logo').prop('checked', d.logo);
     this.$('#overlay').find('[value="'+d.overlayColor+'"]').prop('checked', true);
     this.$('#background').find('[value="'+d.backgroundColor+'"]').prop('checked', true);
   },
@@ -111,7 +120,9 @@ MEME.MemeEditorView = Backbone.View.extend({
     'input #credit': 'onCredit',
     'input #image-scale': 'onScale',
     'input #headline-scale': 'headlineScale',
+    'input #body-scale': 'bodyScale',
     'change #font-size': 'onFontSize',
+    'change #body-size': 'onBodySize',
     'change #font-weight': 'onFontWeight',
     'change #font-family': 'onFontFamily',
     'change #watermark': 'onWatermark',
@@ -120,6 +131,7 @@ MEME.MemeEditorView = Backbone.View.extend({
     'change #text-position': 'onTextPosition',
     'change #body-position': 'onBodyPosition',
     'change #text-shadow': 'onTextShadow',
+    'change #logo': 'onLogo',
     'change [name="overlay"]': 'onOverlayColor',
     'change [name="background"]': 'onBackgroundColor',
     'dragover #dropzone': 'onZoneOver',
@@ -154,8 +166,16 @@ MEME.MemeEditorView = Backbone.View.extend({
     this.model.set('textShadow', this.$('#text-shadow').prop('checked'));
   },
 
+  onLogo: function() {
+    this.model.set('logo', this.$('#logo').prop('checked'));
+  },
+
   onFontSize: function() {
     this.model.set('fontSize', this.$('#font-size').val());
+  },
+
+  onBodySize: function() {
+    this.model.set('bodySize', this.$('#body-size').val());
   },
 
   onFontWeight: function() {
@@ -198,7 +218,14 @@ MEME.MemeEditorView = Backbone.View.extend({
   },
 
   headlineScale: function() {
+    console.log('headline-scale');
     this.model.set('headlineScale', this.$('#headline-scale').val());
+  },
+
+  bodyScale: function() {
+    console.log('body-scale');
+    this.model.set('bodyScale', this.$('#body-scale').val());
+    console.log('set',this.model);
   },
 
   onOverlayColor: function(evt) {
